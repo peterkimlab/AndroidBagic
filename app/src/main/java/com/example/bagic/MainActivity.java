@@ -2,6 +2,8 @@ package com.example.bagic;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import java.util.Arrays;
+import java.util.List;
 
 class StudentInfo{
     public int grade;
@@ -53,5 +55,24 @@ public class MainActivity extends AppCompatActivity {
         Person p3 = new Person(new StudentInfo(99), new Integer(11));
         p3.printInfo(new StudentInfo(99));
 
+        /* 와일드 카드를 사용 하여 sumOfList의 param 값을 Integer, Double 로 제한 할 수 있다. */
+        List<Integer> lists = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        System.out.println("Sum : " + sumOfList(lists)); // Sum : 55
+
+        /* Generic를 사용한 copyOf 예제 */
+        String[] movies = {"킹덤", "하우스오브카드","종이의집"};
+        String[] copyList = Arrays.copyOf(movies, 2);
+
+        for (String movie : copyList) {
+            System.out.println("movie : " + movie);
+        }
+    }
+
+    double sumOfList(List<? extends Number> lists) {
+        double number = 0.0;
+        for (Number n : lists) {
+            number += n.doubleValue();
+        }
+        return number;
     }
 }
