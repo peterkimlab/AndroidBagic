@@ -1,8 +1,34 @@
 package com.example.bagic;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+
+class StudentInfo{
+    public int grade;
+    StudentInfo(int grade){ this.grade = grade; }
+}
+class EmployeeInfo{
+    public int rank;
+    EmployeeInfo(int rank){ this.rank = rank; }
+}
+class Person<T, S> {
+
+    public T info;
+    public S id;
+
+    Person(T info, S id) {
+        this.info = info;
+        this.id = id;
+    }
+
+    public <U> void printInfo(U info) {
+        if (info instanceof EmployeeInfo) {
+            System.out.println("EmployeeInfo : " + ((EmployeeInfo) info).rank); // EmployeeInfo : 1
+        } else if (info instanceof StudentInfo) {
+            System.out.println("StudentInfo : " + ((StudentInfo) info).grade); // StudentInfo : 99
+        }
+    }
+}
 
 public class MainActivity extends AppCompatActivity {
 
@@ -10,6 +36,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        EmployeeInfo e = new EmployeeInfo(1);
+        Integer i = new Integer(10);
+
+        /* EmployeeInfo 의 id 값을 integer 로 변환하여, generics 형태인 Person 객체 생성 */
+        Person<EmployeeInfo, Integer> p1 = new Person<EmployeeInfo, Integer>(e, i);
+        System.out.println("p1.info.rank : " + p1.info.rank); // rank : 1
+        System.out.println("p1.id.intValue() : " + p1.id.intValue()); // id : 10
+
+        /* EmployeeInfo 형태의 Person 생성하여, print */
+        Person p2 = new Person(e, i);
+        p2.<EmployeeInfo>printInfo(e);
+
+        /* StudentInfo 형태의 Person 생성하여, print */
+        Person p3 = new Person(new StudentInfo(99), new Integer(11));
+        p3.printInfo(new StudentInfo(99));
 
     }
 }
