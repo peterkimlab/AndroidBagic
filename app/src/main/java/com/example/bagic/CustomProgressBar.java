@@ -16,13 +16,15 @@ import com.airbnb.lottie.LottieDrawable;
 
 public class CustomProgressBar extends Dialog {
 
-    private Context mContext;
-    private LottieAnimationView mAnimationView;
+    private Context context;
     private RelativeLayout mRelativeLayout;
+    private MainActivity.CancelProgressBar cancelProgressBar;
+    public Button cancelButton;
 
-    public CustomProgressBar(Context context) {
-        super(context);
-        mContext = context;
+    public CustomProgressBar(Context ctx, MainActivity.CancelProgressBar cancelProgress) {
+        super(ctx);
+        context = ctx;
+        cancelProgressBar = cancelProgress;
     }
 
     @SuppressLint("ResourceType")
@@ -37,8 +39,8 @@ public class CustomProgressBar extends Dialog {
         final float scale = getContext().getResources().getDisplayMetrics().density;
         int pixels = (int) (250 * scale + 0.5f);
 
-        RelativeLayout relativeLayout = new RelativeLayout(mContext);
-        relativeLayout.setBackground(mContext.getResources().getDrawable(R.drawable.progressbar_bg));
+        RelativeLayout relativeLayout = new RelativeLayout(context);
+        relativeLayout.setBackground(context.getResources().getDrawable(R.drawable.progressbar_bg));
 
         RelativeLayout.LayoutParams backgroundParams = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -55,7 +57,7 @@ public class CustomProgressBar extends Dialog {
 
         textViewParam.height = 120;
 
-        TextView textView = new TextView(mContext);
+        TextView textView = new TextView(context);
         textView.setLayoutParams(textViewParam);
         textView.setText("Message");
         textView.setGravity(Gravity.BOTTOM);
@@ -65,14 +67,14 @@ public class CustomProgressBar extends Dialog {
         //textView.setBackgroundColor(Color.parseColor("#60000000"));
         textViewParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        LottieAnimationView mAnimationView = new LottieAnimationView(mContext);
+        LottieAnimationView mAnimationView = new LottieAnimationView(context);
 
         RelativeLayout.LayoutParams lottieParams = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         LottieDrawable lottieDrawable = new LottieDrawable();
-        LottieComposition.Factory.fromAssetFileName(mContext, "white-house.json",(composition -> {
+        LottieComposition.Factory.fromAssetFileName(context, "white-house.json",(composition -> {
             lottieDrawable.setComposition(composition);
             lottieDrawable.playAnimation();
             lottieDrawable.loop(true);
@@ -91,11 +93,11 @@ public class CustomProgressBar extends Dialog {
 
         cancelButtonParam.width = pixels - 100;
 
-        Button cancelButton = new Button(mContext);
+        cancelButton = new Button(context);
         cancelButton.setText("Cancel");
         cancelButton.setLayoutParams(cancelButtonParam);
         cancelButton.setTextColor(Color.WHITE);
-        cancelButton.setBackgroundColor(Color.RED);
+        cancelButton.setBackground(context.getResources().getDrawable(R.drawable.orange_button_bg));
         cancelButtonParam.addRule(RelativeLayout.BELOW, 2);
         cancelButtonParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
@@ -103,6 +105,10 @@ public class CustomProgressBar extends Dialog {
         mRelativeLayout.addView(mAnimationView, lottieParams);
         mRelativeLayout.addView(textView, textViewParam);
         mRelativeLayout.addView(cancelButton, cancelButtonParam);
+    }
+
+    public Button getCancelButton() {
+        return cancelButton;
     }
 
 }
