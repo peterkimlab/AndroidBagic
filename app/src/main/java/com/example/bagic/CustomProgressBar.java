@@ -18,13 +18,11 @@ public class CustomProgressBar extends Dialog {
 
     private Context context;
     private RelativeLayout mRelativeLayout;
-    private MainActivity.CancelProgressBar cancelProgressBar;
     public Button cancelButton;
 
-    public CustomProgressBar(Context ctx, MainActivity.CancelProgressBar cancelProgress) {
+    public CustomProgressBar(Context ctx) {
         super(ctx);
         context = ctx;
-        cancelProgressBar = cancelProgress;
     }
 
     @SuppressLint("ResourceType")
@@ -39,6 +37,7 @@ public class CustomProgressBar extends Dialog {
         final float scale = getContext().getResources().getDisplayMetrics().density;
         int pixels = (int) (250 * scale + 0.5f);
 
+        /* Dialog의 background를 relativelayout으로 구성 */
         RelativeLayout relativeLayout = new RelativeLayout(context);
         relativeLayout.setBackground(context.getResources().getDrawable(R.drawable.progressbar_bg));
 
@@ -50,7 +49,7 @@ public class CustomProgressBar extends Dialog {
         backgroundParams.height = pixels + 230;
         backgroundParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
-        // TextView
+        /* Dialog 상단의 text 메세지 구성 */
         RelativeLayout.LayoutParams textViewParam = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -63,10 +62,10 @@ public class CustomProgressBar extends Dialog {
         textView.setGravity(Gravity.BOTTOM);
         textView.setId(1);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-        textView.setTextColor(Color.WHITE); // set white color for the text of Button
-        //textView.setBackgroundColor(Color.parseColor("#60000000"));
+        textView.setTextColor(Color.WHITE);
         textViewParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
+        /* Dialog 중앙의 LottieAnimation 구성 */
         LottieAnimationView mAnimationView = new LottieAnimationView(context);
 
         RelativeLayout.LayoutParams lottieParams = new RelativeLayout.LayoutParams(
@@ -86,7 +85,7 @@ public class CustomProgressBar extends Dialog {
         lottieParams.addRule(RelativeLayout.BELOW, 1);
         lottieParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-        // set the layout params for Button
+        /* Dialog 하단의 Button 구성 */
         RelativeLayout.LayoutParams cancelButtonParam = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -101,6 +100,7 @@ public class CustomProgressBar extends Dialog {
         cancelButtonParam.addRule(RelativeLayout.BELOW, 2);
         cancelButtonParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
+        /* xml에 있는 relativelayout에 programmatically 구성한 component를 addView */
         mRelativeLayout.addView(relativeLayout, backgroundParams);
         mRelativeLayout.addView(mAnimationView, lottieParams);
         mRelativeLayout.addView(textView, textViewParam);
